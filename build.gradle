@@ -17,14 +17,24 @@ configurations {
 }
 
 repositories {
+	mavenLocal()
 	mavenCentral()
+    jcenter()
+    maven { url "https://repo.spring.io/libs-milestone" }
+    maven { url "https://repo.spring.io/libs-snapshot" }
+    maven { url "https://plugins.gradle.org/m2/" }
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation "org.apereo.cas:cas-server-core:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-core-tickets:${project.'cas.version'}"
+	implementation "org.apereo.cas:cas-server-core-services:${project.'cas.version'}"
+	implementation "org.apereo.cas:cas-server-core-services-authentication:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-core-logout:${project.'cas.version'}"
-	implementation "org.apereo.cas:cas-server-core-authencation:${project.'cas.version'}"
+	implementation "org.apereo.cas:cas-server-core-authentication:${project.'cas.version'}"
+	implementation "org.apereo.cas:cas-server-core-authentication-api:${project.'cas.version'}"
+	implementation "org.apereo.cas:cas-server-core-authentication-attributes:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-support-rest:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-support-json-service-registry:${project.'cas.version'}"
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
