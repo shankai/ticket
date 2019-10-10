@@ -1,0 +1,16 @@
+{
+  "@class": "org.apereo.cas.services.RegexRegisteredService",
+  "serviceId": "^http://.*",
+  "name": "Http",
+  "id": 1000,
+  "evaluationOrder": 1000,
+  "accessStrategy": {
+    "@class": "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
+    "enabled": true,
+    "ssoEnabled": true,
+    "requiredAttributes": {
+      "@class": "java.util.HashMap",
+      "alias1": ["java.util.HashSet", ["admin"]]
+    }
+  }
+}
