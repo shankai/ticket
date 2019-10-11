@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.1.9.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
+	id 'java-library'
 }
 
 group = 'com.qloudfin.qloudauth'
@@ -35,6 +36,7 @@ dependencies {
 	implementation "org.apereo.cas:cas-server-core-authentication:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-core-authentication-api:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-core-authentication-attributes:${project.'cas.version'}"
+	implementation "org.apereo.cas:cas-server-support-generic:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-support-rest:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-support-json-service-registry:${project.'cas.version'}"
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'

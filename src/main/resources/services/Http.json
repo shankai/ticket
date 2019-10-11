@@ -7,10 +7,6 @@
   "accessStrategy": {
     "@class": "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
     "enabled": true,
-    "ssoEnabled": true,
-    "requiredAttributes": {
-      "@class": "java.util.HashMap",
-      "alias1": ["java.util.HashSet", ["admin"]]
-    }
+    "ssoEnabled": true
   }
 }

@@ -28,8 +28,8 @@ import lombok.val;
  */
 public class TicketUtils {
 
-    private static final ExpirationPolicy EXP_POLICY = new HardTimeoutExpirationPolicy(1000); // 1000s
-    private static final UniqueTicketIdGenerator GENERATOR = new DefaultUniqueTicketIdGenerator();
+    public static final ExpirationPolicy EXP_POLICY = new HardTimeoutExpirationPolicy(1000); // 1000s
+    public static final UniqueTicketIdGenerator GENERATOR = new DefaultUniqueTicketIdGenerator();
 
     private static final String TICKET_GRANTING_TICKET_PREFIX = "TGT";
     private static final String SERVICE_TICKET_PREFIX = "ST";
