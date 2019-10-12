@@ -6,15 +6,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qloudfin.qloudauth.ticket.util.TicketUtils;
 
 import org.apereo.cas.CentralAuthenticationService;
+import org.apereo.cas.authentication.AuthenticationResult;
 import org.apereo.cas.authentication.AuthenticationSystemSupport;
 import org.apereo.cas.authentication.Credential;
+import org.apereo.cas.authentication.DefaultAuthenticationResult;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.ticket.ServiceTicket;
 import org.apereo.cas.ticket.Ticket;
 import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.TicketGrantingTicket;
-import org.apereo.cas.ticket.TicketGrantingTicketFactory;
+import org.apereo.cas.ticket.proxy.ProxyGrantingTicket;
+import org.apereo.cas.ticket.proxy.ProxyTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.validation.Assertion;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +56,6 @@ public class TicketRestController {
     @RequestMapping(value = "/tickets", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getTickets() {
         Collection<? extends Ticket> tickets = ticketRegistry.getTickets();
-        // Object[] results = tickets.stream().map(ticket ->
-        // ticket.toString()).toArray();
         try {
             return new ResponseEntity<>(new ObjectMapper().writeValueAsString(tickets), HttpStatus.OK);
         } catch (Exception e) {
@@ -68,16 +69,14 @@ public class TicketRestController {
             @RequestParam(value = "username", required = true) String username,
             @RequestParam(value = "pwd", required = true) String pwd) {
 
-        Service selectedService = TicketUtils.generateService("http://www.baidu.com");
-
+        // Service selectedService =
+        // TicketUtils.generateService("http://www.baidu.com");
         Credential c = new UsernamePasswordCredential(username, pwd);
-        val result = authenticationSystemSupport.handleAndFinalizeSingleAuthenticationTransaction(selectedService, c);
+        val authenticationResult = authenticationSystemSupport.handleAndFinalizeSingleAuthenticationTransaction(null,
+                c);
         try {
-
-            val factory = (TicketGrantingTicketFactory) this.ticketFactory.get(TicketGrantingTicket.class);
-            val ticketGrantingTicket = factory.create(result.getAuthentication(), TicketGrantingTicket.class);
-            ticketRegistry.addTicket(ticketGrantingTicket);
-
+            val ticketGrantingTicket = this.centralAuthenticationService
+                    .createTicketGrantingTicket(authenticationResult);
             log.info("TicketGrantingTicket Id: {}", ticketGrantingTicket.getId());
 
             return new ResponseEntity<>(new ObjectMapper().writeValueAsString(ticketGrantingTicket), HttpStatus.OK);
@@ -91,11 +90,14 @@ public class TicketRestController {
     public ResponseEntity<Object> grantServiceTicket(@RequestParam("ticket") String ticketId,
             @RequestParam("service") String serviceId) {
         TicketGrantingTicket tgt = ticketRegistry.getTicket(ticketId, TicketGrantingTicket.class);
-        Service selectedService = TicketUtils.generateService("http://www.baidu.com");
+        Service selectedService = TicketUtils.generateService(serviceId);
 
-        ServiceTicket serviceTicket = tgt.grantServiceTicket(TicketUtils.GENERATOR.getNewTicketId("ST"), selectedService, TicketUtils.EXP_POLICY, true, false);
+        AuthenticationResult authenticationResult = new DefaultAuthenticationResult(tgt.getAuthentication(),
+                selectedService);
+        // grant service ticket & add/update ticket registry
+        ServiceTicket serviceTicket = this.centralAuthenticationService.grantServiceTicket(ticketId, selectedService,
+                authenticationResult);
         try {
-            ticketRegistry.addTicket(serviceTicket);
             return new ResponseEntity<>(new ObjectMapper().writeValueAsString(serviceTicket), HttpStatus.OK);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -117,5 +119,41 @@ public class TicketRestController {
             return new ResponseEntity<>("error", HttpStatus.OK);
         }
         return new ResponseEntity<>("true", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/proxyGrantingTicket", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> proxyGrantingTicket(@RequestParam("ticket") String serviceTicketId) {
+
+        ServiceTicket serviceTicket = this.ticketRegistry.getTicket(serviceTicketId, ServiceTicket.class);
+        log.debug("Service Ticket: {}", serviceTicket);
+        AuthenticationResult authenticationResult = new DefaultAuthenticationResult(
+                serviceTicket.getTicketGrantingTicket().getAuthentication(), serviceTicket.getService());
+
+        log.debug("AuthenticationResult: {}", authenticationResult);
+        // create pgt & add/update ticket registry
+        ProxyGrantingTicket proxyGrantingTicket = this.centralAuthenticationService
+                .createProxyGrantingTicket(serviceTicketId, authenticationResult);
+
+        try {
+            return new ResponseEntity<>(new ObjectMapper().writeValueAsString(proxyGrantingTicket), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/proxyTicket", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> grantProxyTicket(@RequestParam("pgtId") String pgtId,
+            @RequestParam("targetService") String targetServiceId) {
+
+        Service targetService = TicketUtils.generateService(targetServiceId);
+        // grant proxy ticket & add/update ticket registry
+        ProxyTicket proxyTicket = this.centralAuthenticationService.grantProxyTicket(pgtId, targetService);
+        try {
+            return new ResponseEntity<>(new ObjectMapper().writeValueAsString(proxyTicket), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

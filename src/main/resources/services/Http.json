@@ -1,6 +1,6 @@
 {
   "@class": "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId": "^http://.*",
+  "serviceId": "^http://http.*",
   "name": "Http",
   "id": 1000,
   "evaluationOrder": 1000,
@@ -8,5 +8,9 @@
     "@class": "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
     "enabled": true,
     "ssoEnabled": true
+  },
+  "proxyPolicy" : {
+    "@class" : "org.apereo.cas.services.RegexMatchingRegisteredServiceProxyPolicy",
+    "pattern" : "^http://target.*"
   }
 }

@@ -1,0 +1,12 @@
+{
+  "@class": "org.apereo.cas.services.RegexRegisteredService",
+  "serviceId": "^http://target.*",
+  "name": "Target",
+  "id": 1001,
+  "evaluationOrder": 1001,
+  "accessStrategy": {
+    "@class": "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
+    "enabled": true,
+    "ssoEnabled": true
+  }
+}

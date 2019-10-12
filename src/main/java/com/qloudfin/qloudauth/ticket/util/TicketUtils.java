@@ -38,7 +38,7 @@ public class TicketUtils {
         SimpleWebApplicationServiceImpl service = new SimpleWebApplicationServiceImpl();
         service.setId(serviceId);
         service.setOriginalUrl(serviceId);
-        service.setArtifactId(null);
+        service.setArtifactId(serviceId);
         return service;
     }
 
