@@ -16,8 +16,8 @@ import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +37,7 @@ public class SampleRestController {
     @Autowired
     private ServicesManager servicesManager;
 
-    @RequestMapping("/sample/tgt/{princialId}")
+    @GetMapping("/sample/tgt/{princialId}")
     public ResponseEntity<Object> getTicket(@PathVariable("princialId") String id) {
         // mock attributes
         Map<String, Object> attributes = new HashMap<>();
@@ -48,7 +48,7 @@ public class SampleRestController {
         return new ResponseEntity<>(tgt.toString(), HttpStatus.OK);
     }
 
-    @RequestMapping("/sample/st")
+    @GetMapping("/sample/st")
     public ResponseEntity<String> st(@RequestParam("ticket") String ticketId,
             @RequestParam("service") String serviceId) {
 

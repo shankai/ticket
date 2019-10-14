@@ -30,7 +30,10 @@ import org.springframework.context.annotation.Bean;
 
 import lombok.val;
 import lombok.extern.log4j.Log4j2;
-
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication(exclude = {
     HibernateJpaAutoConfiguration.class,
     JerseyAutoConfiguration.class,
@@ -47,15 +50,22 @@ import lombok.extern.log4j.Log4j2;
     CasCoreAuthenticationPrincipalConfiguration.class
 })
 @Log4j2
+@EnableSwagger2
 public class TicketApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TicketApplication.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(TicketApplication.class, args);
+    }
+
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2).select()
+                .apis(RequestHandlerSelectors.basePackage("com.qloudfin")).build();
     }
 
     @Autowired
     private CasConfigurationProperties casProperties;
-    
+
     @Bean
     @ConditionalOnMissingBean(name = "globalPrincipalAttributeRepository")
     public PrincipalAttributesRepository globalPrincipalAttributeRepository() {

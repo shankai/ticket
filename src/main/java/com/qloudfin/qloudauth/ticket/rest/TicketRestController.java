@@ -25,8 +25,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,7 +53,7 @@ public class TicketRestController {
     @Autowired
     AuthenticationSystemSupport authenticationSystemSupport;
 
-    @RequestMapping(value = "/tickets", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/tickets", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getTickets() {
         Collection<? extends Ticket> tickets = ticketRegistry.getTickets();
         try {
@@ -86,7 +86,7 @@ public class TicketRestController {
         }
     }
 
-    @RequestMapping(value = "/serviceTicket", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/serviceTicket", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> grantServiceTicket(@RequestParam("ticket") String ticketId,
             @RequestParam("service") String serviceId) {
         TicketGrantingTicket tgt = ticketRegistry.getTicket(ticketId, TicketGrantingTicket.class);
@@ -105,7 +105,7 @@ public class TicketRestController {
         }
     }
 
-    @RequestMapping("/validate")
+    @GetMapping("/validate")
     public ResponseEntity<String> validateServiceTicket(@RequestParam("ticket") String serviceTicketId,
             @RequestParam("service") String serviceId) {
         log.debug("Service Ticket Validation, parameters: {}, {}", serviceTicketId, serviceId);
@@ -121,7 +121,7 @@ public class TicketRestController {
         return new ResponseEntity<>("true", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/proxyGrantingTicket", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/proxyGrantingTicket", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> proxyGrantingTicket(@RequestParam("ticket") String serviceTicketId) {
 
         ServiceTicket serviceTicket = this.ticketRegistry.getTicket(serviceTicketId, ServiceTicket.class);
@@ -142,7 +142,7 @@ public class TicketRestController {
         }
     }
 
-    @RequestMapping(value = "/proxyTicket", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/proxyTicket", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> grantProxyTicket(@RequestParam("pgtId") String pgtId,
             @RequestParam("targetService") String targetServiceId) {
 

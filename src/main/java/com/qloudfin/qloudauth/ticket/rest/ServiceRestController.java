@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.log4j.Log4j2;
@@ -26,7 +26,7 @@ public class ServiceRestController {
     @Autowired
     private ServicesManager servicesManager;
 
-    @RequestMapping(value = "/services", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/services", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getRegexRegisteredServices() {
         Collection<RegisteredService> services = servicesManager.getAllServices();
         try {
@@ -37,7 +37,7 @@ public class ServiceRestController {
         }
     }
 
-    @RequestMapping(value = "/service/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/service/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getServiceById(@PathVariable("id") long id) {
         RegisteredService service = servicesManager.findServiceBy(id);
         try {

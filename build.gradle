@@ -39,6 +39,8 @@ dependencies {
 	implementation "org.apereo.cas:cas-server-support-generic:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-support-rest:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-support-json-service-registry:${project.'cas.version'}"
+	implementation "io.springfox:springfox-swagger2:${project.'swagger.version'}"
+	implementation "io.springfox:springfox-swagger-ui:${project.'swagger.version'}"
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
