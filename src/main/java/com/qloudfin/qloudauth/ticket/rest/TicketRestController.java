@@ -14,14 +14,12 @@ import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.ticket.ServiceTicket;
 import org.apereo.cas.ticket.Ticket;
-import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.proxy.ProxyGrantingTicket;
 import org.apereo.cas.ticket.proxy.ProxyTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.validation.Assertion;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,10 +40,6 @@ public class TicketRestController {
 
     @Autowired
     private TicketRegistry ticketRegistry;
-
-    @Autowired
-    @Qualifier("defaultTicketFactory")
-    private TicketFactory ticketFactory;
 
     @Autowired
     CentralAuthenticationService centralAuthenticationService;
@@ -81,8 +75,9 @@ public class TicketRestController {
 
             return new ResponseEntity<>(new ObjectMapper().writeValueAsString(ticketGrantingTicket), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
