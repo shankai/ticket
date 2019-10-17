@@ -1,7 +1,5 @@
 package com.qloudfin.qloudauth.ticket;
 
-import com.qloudfin.qloudauth.ticket.rest.TicketRestController;
-
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

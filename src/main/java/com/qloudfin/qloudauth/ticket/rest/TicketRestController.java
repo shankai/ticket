@@ -2,6 +2,9 @@ package com.qloudfin.qloudauth.ticket.rest;
 
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qloudfin.qloudauth.ticket.util.TicketUtils;
 
@@ -19,6 +22,7 @@ import org.apereo.cas.ticket.proxy.ProxyGrantingTicket;
 import org.apereo.cas.ticket.proxy.ProxyTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.validation.Assertion;
+import org.apereo.cas.web.support.CookieRetrievingCookieGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,6 +51,9 @@ public class TicketRestController {
     @Autowired
     AuthenticationSystemSupport authenticationSystemSupport;
 
+    @Autowired
+    CookieRetrievingCookieGenerator ticketGrantingTicketCookieGenerator;
+
     @GetMapping(value = "/tickets", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getTickets() {
         Collection<? extends Ticket> tickets = ticketRegistry.getTickets();
@@ -61,7 +68,8 @@ public class TicketRestController {
     @PostMapping(value = "/ticketGrantingTicket", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> grantTicketGrantingTicket(
             @RequestParam(value = "username", required = true) String username,
-            @RequestParam(value = "pwd", required = true) String pwd) {
+            @RequestParam(value = "pwd", required = true) String pwd, final HttpServletRequest request,
+            final HttpServletResponse response) {
 
         // Service selectedService =
         // TicketUtils.generateService("http://www.baidu.com");
@@ -72,6 +80,8 @@ public class TicketRestController {
             val ticketGrantingTicket = this.centralAuthenticationService
                     .createTicketGrantingTicket(authenticationResult);
             log.info("TicketGrantingTicket Id: {}", ticketGrantingTicket.getId());
+
+            ticketGrantingTicketCookieGenerator.addCookie(request, response, ticketGrantingTicket.getId());
 
             return new ResponseEntity<>(new ObjectMapper().writeValueAsString(ticketGrantingTicket), HttpStatus.OK);
         } catch (Exception e) {
