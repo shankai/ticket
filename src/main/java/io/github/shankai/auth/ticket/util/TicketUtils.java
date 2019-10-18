@@ -1,4 +1,4 @@
-package com.qloudfin.qloudauth.ticket.util;
+package io.github.shankai.auth.ticket.util;
 
 import java.time.ZonedDateTime;
 import java.util.Map;

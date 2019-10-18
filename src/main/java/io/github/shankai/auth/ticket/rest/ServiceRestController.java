@@ -1,4 +1,4 @@
-package com.qloudfin.qloudauth.ticket.rest;
+package io.github.shankai.auth.ticket.rest;
 
 import java.util.Collection;
 

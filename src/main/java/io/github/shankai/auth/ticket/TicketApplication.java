@@ -1,4 +1,4 @@
-package com.qloudfin.qloudauth.ticket;
+package io.github.shankai.auth.ticket;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthIndicatorAutoConfiguration;
@@ -44,7 +44,7 @@ public class TicketApplication {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors.basePackage("com.qloudfin")).build();
+                .apis(RequestHandlerSelectors.basePackage("io.github.shankai.auth.ticket")).build();
     }
 
 }

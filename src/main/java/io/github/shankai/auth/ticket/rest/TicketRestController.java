@@ -1,4 +1,4 @@
-package com.qloudfin.qloudauth.ticket.rest;
+package io.github.shankai.auth.ticket.rest;
 
 import java.util.Collection;
 
@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qloudfin.qloudauth.ticket.util.TicketUtils;
 
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.authentication.AuthenticationResult;
@@ -32,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.shankai.auth.ticket.util.TicketUtils;
 import lombok.val;
 import lombok.extern.log4j.Log4j2;
 

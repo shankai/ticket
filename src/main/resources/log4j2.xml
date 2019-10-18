@@ -39,7 +39,7 @@
     </Appenders>
     <Loggers>
         <!-- 用来单独指定日志的形式，比如要为指定包下的class指定不同的日志级别等。 -->
-        <Logger name="com.qloudfin.qloudauth.ticket" level="DEBUG" additivity="false">
+        <Logger name="io.github.shankai.auth.ticket" level="DEBUG" additivity="false">
             <AppenderRef ref="ConsoleAppender" />
             <!-- <AppenderRef ref="FileAppender"/> -->
         </Logger>

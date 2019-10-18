@@ -1,4 +1,4 @@
-package com.qloudfin.qloudauth.ticket;
+package io.github.shankai.auth.ticket;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

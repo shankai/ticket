@@ -5,7 +5,7 @@ plugins {
 	id 'java-library'
 }
 
-group = 'com.qloudfin.qloudauth'
+group = 'io.github.shankai.auth'
 version = '1.0.0'
 sourceCompatibility = '11'
 
@@ -31,6 +31,7 @@ dependencies {
 	implementation "org.apereo.cas:cas-server-core:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-core-web:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-core-cookie:${project.'cas.version'}"
+	implementation "org.apereo.cas:cas-server-core-cookie-api:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-support-redis-ticket-registry:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-core-tickets:${project.'cas.version'}"
 	implementation "org.apereo.cas:cas-server-core-services:${project.'cas.version'}"
